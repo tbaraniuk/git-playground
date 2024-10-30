@@ -4,7 +4,13 @@ import random
 
 def congratulate_user():
     print("=============================")
-    print("= Congratulations! You won! your words: {guesses}")
+    print(f"= Congratulations! You won! your words: {guesses}")
+    print("=============================")
+
+
+def show_defeat():
+    print("=============================")
+    print(f"= Oops it seems you lost! Try again and win! your words: {guesses}")
     print("=============================")
 
 
@@ -25,11 +31,11 @@ def guess_is_valid(candidate):
 
 
 def guess_has_used(guess):
-    if guess in guessed_words:
+    if guess in words_used:
         print(f"'{guess}' has been already used! Please, try new one world")
         return True
 
-    guessed_words.append(guess)
+    words_used.append(guess)
     return False
 
 
@@ -37,6 +43,7 @@ guessed = 0
 errors = 0
 
 guesses = []
+words_used = []
 
 WORDS_TO_WIN = 5
 ERRORS_TO_LOSE = 3
@@ -44,7 +51,6 @@ ERRORS_TO_LOSE = 3
 words = words_fetcher.fetch_words(min_letters=9, max_letters=9)
 full_list = words_fetcher.fetch_words(min_letters=3, max_letters=9)
 word = words[random.randrange(0, len(words))]
-guessed_words = []
 
 print(f"Can you make up {WORDS_TO_WIN} words from letters in word provided by me?")
 print(f"Your word is '{word}'")
@@ -68,4 +74,9 @@ while not is_game_over():
         print(f"That's right! {WORDS_TO_WIN - guessed} to go")
     else:
         errors += 1
+
+        if errors == ERRORS_TO_LOSE:
+            show_defeat()
+            break
+
         print(f"Oops :( No such word, you have {ERRORS_TO_LOSE - errors} lives more")
