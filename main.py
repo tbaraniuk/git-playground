@@ -24,6 +24,15 @@ def guess_is_valid(candidate):
     return True
 
 
+def guess_has_used(guess):
+    if guess in guessed_words:
+        print(f"'{guess}' has been already used! Please, try new one world")
+        return True
+
+    guessed_words.append(guess)
+    return False
+
+
 guessed = 0
 errors = 0
 
@@ -35,6 +44,7 @@ ERRORS_TO_LOSE = 3
 words = words_fetcher.fetch_words(min_letters=9, max_letters=9)
 full_list = words_fetcher.fetch_words(min_letters=3, max_letters=9)
 word = words[random.randrange(0, len(words))]
+guessed_words = []
 
 print(f"Can you make up {WORDS_TO_WIN} words from letters in word provided by me?")
 print(f"Your word is '{word}'")
@@ -44,6 +54,9 @@ while not is_game_over():
     guess = input("Your next take: ")
 
     if not guess_is_valid(guess):
+        continue
+
+    if guess_has_used(guess):
         continue
 
     if guess in full_list:
